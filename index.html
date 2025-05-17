@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Договор на организацию отдыха</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <form id="feedbackForm" novalidate>
+        <h1>ЛАГЕРЬ 2025</h1>
+
+        <div id="formFields">
+            <h2>📝 Данные Родителя</h2>
+
+            <label for="parentsname">ФИО родителя</label>
+            <input type="text" id="parentsname" name="parentsname" placeholder="Иванов Антон Иванович" required>
+
+            <label for="passport">Серия и номер паспорта</label>
+            <input type="text" id="passport" name="passport" placeholder="0000 000000" required>
+
+            <label for="passportinfo">Кем и когда выдан паспорт</label>
+            <input type="text" id="passportinfo" name="passportinfo"
+                placeholder="УФМС России по Московской обл. 26.12.2008" required>
+
+            <label for="passportadres">Адрес регистрации</label>
+            <input type="text" id="passportadres" name="passportadres"
+                placeholder="Московская обл., г. Иваново, ул Парижской Комунны, д. 25 кв 17" required>
+
+            <h2>👶 Данные ребенка</h2>
+            <label for="childrenname">ФИО ребенка</label>
+            <input type="text" id="childrenname" name="childrenname" placeholder="Иванов Антон Иванович" required>
+
+            <label for="birthday">Дата рождения ребенка</label>
+            <input type="text" id="birthday" name="birthday" placeholder="10 января 2005" required>
+
+            <label for="documentchildren">Номер документа ребенка</label>
+            <input type="text" id="documentchildren" name="documentchildren"
+                placeholder="Паспорт РФ или Свидетельство о рождении" required>
+
+            <h2>📸 Фотография документа</h2>
+            <div class="file-upload-wrapper">
+                <label for="documentscan" class="file-upload-label">Выберите файл</label>
+                <span class="file-name">Файл не выбран</span>
+                <input type="file" id="documentscan" name="documentscan" required>
+            </div>
+
+            <h2>🚌 Выезд</h2>
+            <label for="option">Выберите вариант выезда:</label>
+            <select id="option" name="option" required>
+                <option value="" disabled selected>-- Выберите город --</option>
+                <option value="Москва">Москва</option>
+                <option value="Калининград">Калининград</option>
+                <option value="Самостоятельно">Самостоятельно</option>
+            </select>
+
+            <label for="number">Мобильный телефон</label>
+            <input type="tel" id="number" name="number" placeholder="+79999999999" pattern="(^\+7\d{10}$|^8\d{10}$)" required>
+
+            <label for="email">Электронная почта</label>
+            <input type="email" id="email" name="email" placeholder="example@example.com" required>
+
+            <button type="submit" style="background: #27ae60; width: 100%; padding: 18px;">📩 Отправить данные</button>
+        </div>
+    </form>
+
+    <div id="status">
+        <div class="status-content">
+            <span class="status-icon"></span>
+            <div class="message"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+        }
+        });
+        const checkpromo = document.getElementById('promoCode');
+        const formFields = document.getElementById('formFields');
+        const statusElement = document.getElementById('status');
+        const statusIcon = document.querySelector('.status-icon');
+        const statusMessage = document.querySelector('.message');
+        const feedbackForm = document.getElementById('feedbackForm');
+        document.getElementById('documentscan').addEventListener('change', function (e) {
+            const fileName = e.target.files[0]?.name || 'Файл не выбран';
+            document.querySelector('.file-name').textContent = fileName;
+        });
+
+        feedbackForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const requiredFields = [
+        'parentsname', 'passport', 'passportinfo', 
+        'passportadres', 'childrenname', 'birthday',
+        'documentchildren', 'option', 'number', 'email'
+    ];
+    
+    let hasErrors = false;
+
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (!field.value.trim()) {
+            field.style.borderColor = '#c62828';
+            hasErrors = true;
+        } else {
+            field.style.borderColor = '#bdc3c7';
+        }
+    });
+    const fileInput = document.getElementById('documentscan');
+    if (!fileInput.files[0]) {
+        fileInput.parentElement.style.border = '2px solid #c62828';
+        hasErrors = true;
+    } else {
+        fileInput.parentElement.style.border = 'none';
+    }
+    const phoneField = document.getElementById('number');
+    if (!/^\+7\d{10}$|^8\d{10}$/.test(phoneField.value)) {
+        phoneField.style.borderColor = '#c62828';
+        hasErrors = true;
+    }
+
+    if (hasErrors) {
+        statusElement.classList.add('active');
+        statusIcon.textContent = '❌';
+        statusMessage.innerHTML = 'Заполните все обязательные поля правильно';
+        setTimeout(() => statusElement.classList.remove('active'), 3000);
+        return;
+    }
+    statusElement.classList.add('active');
+    statusIcon.textContent = '⏳';
+    statusMessage.innerHTML = 'Отправка данных... \n\n Пожалуйста не закрывайте страницу до тех пор, пока не высветится статус "Готово"';
+            
+            try {
+                const fileInput = document.getElementById('documentscan');
+                const file = fileInput.files[0];
+                let fileData = null;
+
+                if (file) {
+                    const reader = new FileReader();
+                    fileData = await new Promise((resolve, reject) => {
+                        reader.onload = e => resolve(e.target.result.split(',')[1]);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                }
+
+                const formData = {
+                    parentsname: document.getElementById('parentsname').value,
+                    passport: document.getElementById('passport').value,
+                    passportinfo: document.getElementById('passportinfo').value,
+                    passportadres: document.getElementById('passportadres').value,
+                    childrenname: document.getElementById('childrenname').value,
+                    birthday: document.getElementById('birthday').value,
+                    documentchildren: document.getElementById('documentchildren').value,
+                    option: document.getElementById('option').value,
+                    number: document.getElementById('number').value,
+                    email: document.getElementById('email').value,
+                    fileData: {
+                        name: file?.name || '',
+                        type: file?.type || '',
+                        data: fileData || ''
+                    }
+                };
+    
+                const response = await fetch('YOUR-URL-SCRIPT', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                await response.text();
+                statusIcon.textContent = '✅';
+                statusMessage.innerHTML = `Готово!<br>Договор отправлен на вашу почту ${formData.email}`;
+                feedbackForm.reset();
+                disableFormFields();
+
+                setTimeout(() => {
+                    statusElement.classList.remove('active');
+                }, 5000);
+
+            } catch (error) {
+                statusIcon.textContent = '❌';
+                statusMessage.innerHTML = `Ошибка: ${error.message}<br>Попробуйте еще раз`;
+            }
+        });
+
+        disableFormFields();
+    </script>
+</body>
+
+</html>

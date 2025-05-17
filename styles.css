@@ -1,0 +1,256 @@
+* {
+    font-family: 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 30px;
+    min-height: 100vh;
+    margin: 0;
+}
+
+form {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin: 30px 0 20px;
+    font-size: 1.5em;
+}
+
+h1 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin: 30px 0 20px;
+    font-size: 3em;
+}
+
+label {
+    display: block;
+    margin: 15px 0 5px;
+    color: #34495e;
+    font-weight: 600;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s, background 0.3s;
+    margin: 10px 0;
+}
+
+button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+#checkCodeButton {
+    background: #27ae60;
+    margin-left: 10px;
+}
+
+.disabled-field {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.code-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+input::placeholder {
+    color: #95a5a6;
+    opacity: 1;
+}
+
+.form-note {
+    color: #7f8c8d;
+    font-size: 0.9em;
+    margin: -10px 0 20px;
+    font-style: italic;
+}
+
+.file-upload-wrapper {
+    position: relative;
+    margin: 20px 0;
+}
+
+.file-upload-label {
+    display: block;
+    background: #3498db;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-align: center;
+    border: 2px dashed #fff;
+}
+
+.file-upload-label:hover {
+    background: #2980b9;
+}
+
+.file-upload-label::before {
+    content: '📁 ';
+    margin-right: 8px;
+}
+
+#documentscan {
+    display: none;
+}
+
+.file-name {
+    display: block;
+    margin-top: 10px;
+    color: #7f8c8d;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+#status {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#status.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#status::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    z-index: -1;
+}
+
+.status-content {
+    text-align: center;
+    max-width: 500px;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    font-size: 1.2em;
+}
+
+.status-content div {
+    margin: 20px 0;
+}
+
+.loading {
+    color: #0d47a1;
+}
+
+.success {
+    color: #2e7d32;
+}
+
+.error {
+    color: #c62828;
+}
+
+.status-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    form {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+        margin: 20px 0;
+    }
+
+    .code-section {
+        flex-direction: column;
+    }
+
+
+    button {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    input,
+    select {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .status-content {
+        padding: 20px;
+        margin: 15px;
+        font-size: 1em;
+    }
+}
+
+.file-error {
+    color: #c62828;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none;
+}
